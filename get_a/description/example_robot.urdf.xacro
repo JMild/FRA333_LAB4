@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
+
+    <!-- This is an example of a URDF. -->
+    <!-- As we move through the file, new things to note will be pointed out. -->
+    <!-- It's not meant an example of GOOD design, but an example of some of the various features of URDF/xacro. -->
+
+
+
+    <!-- This will include all the contents of example_include.xacro first. Go check it out! -->
+    <xacro:include filename="example_include.xacro" />
+
+
+
+    <!-- This first link called "world" is empty -->
+    <link name="world"></link>
+
+
+    <!-- A simple fixed joint from our empty world link, to our base. -->
+    <!-- The base origin is offset from the world origin. -->
+    <joint name="base_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="world"/>
+        <child link="link_0"/>        
+    </joint>
+
+    <!-- base_link is a large rectangular plate. Some things to note: -->
+    <!-- - We set the visual origin Z to half the box height, so that the link origin sits at the bottom of the box -->
+    <!-- - We set the collision to be identical to the visual -->
+    <!-- - We specified the colour manually (but still need to enter a name) -->
+    <!-- - We specified all the inertial parameters manually -->
+    <link name="link_0">
+        <visual>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_0.STL"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.5 0.1 0.5 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <contact_coefficients mu="0.5" kp="1000.0" kd="1.0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_0.STL"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.02055" />
+            <inertia ixx="21.735" ixy="0.0" ixz="0.0" iyy="21.735" iyz="0.0" izz="7.570" />
+        </inertial>
+    </link>
+
+    <joint name="joint_0" type="fixed">
+        <parent link="link_0"/>
+        <child link="link_1"/>
+        <origin rpy="0 0 0.0" xyz="0 0 0.2"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14" upper="3.14" effort="1000.0" velocity="1000.0"/>
+    </joint>
+
+    <link name="link_1">
+        <visual>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_1.STL"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.0" rpy="0 0 0.0"/>
+            <contact_coefficients mu="0.2" kp="1000.0" kd="1.0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_1.STL"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <mass value="0.01812" />
+            <inertia ixx="2.118" ixy="0.0" ixz="-0.07651" iyy="3.362" iyz="0.0" izz="3.336" />
+        </inertial>
+    </link>
+
+    <joint name="joint_1" type="revolute">
+        <parent link="link_0"/>
+        <child link="link_1"/>
+        <origin rpy="0 0 0.0" xyz="0 0 0.2"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14" upper="3.14" effort="1500.0" velocity="1000.0"/>
+        <dynamics damping="0" friction="0"/>
+    </joint>
+
+    <link name="link_2">
+        <visual>
+            <origin xyz="0 0 0.0" rpy="0 0 0.0 "/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_2.STL"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <collision>
+            <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.0" rpy="0 0 0.0"/>
+            <mass value="0.02874" />
+            <inertia ixx="2.467" ixy="0.413" ixz="0.0" iyy="13.060" iyz="0.0" izz="12.526" />
+        </inertial>
+    </link>
+
+    <joint name="joint_2" type="revolute">
+        <parent link="link_1"/>
+        <child link="link_2"/>
+        <origin rpy="1.57079632679 0 0.0" xyz="0 0 1.3"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14" upper="3.14" effort="1000.0" velocity="1000.0"/>
+        <dynamics damping="0" friction="0"/>
+    </joint>
+
+    <link name="link_3">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_3.STL"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <collision>
+            <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <mass value="0.01328" />
+            <inertia ixx="0.783" ixy="-0.0228" ixz="0.0" iyy="2.507" iyz="0.0" izz="2.614" />
+        </inertial>
+    </link>
+
+    <joint name="joint_3" type="revolute">
+        <parent link="link_2"/>
+        <child link="link_3"/>
+        <origin rpy="0 0.0 0" xyz="1.0 0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.14" upper="3.14" effort="1000.0" velocity="1000.0"/>
+        <dynamics damping="10" friction="5"/>
+    </joint>
+
+    <!-- <link name="link_4">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file:///$(find get_a)/meshes/link_4.STL"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <collision>
+            <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <mass value="0.01328" />
+            <inertia ixx="0.783" ixy="-0.0228" ixz="0.0" iyy="2.507" iyz="0.0" izz="2.614" />
+        </inertial>
+    </link> -->
+
+    <!-- <joint name="joint_4" type="revolute">
+        <parent link="link_3"/>
+        <child link="link_4"/>
+        <origin rpy="3.14159265359  0.0 3.14159265359 " xyz="0 0 0.8"/>
+        <axis xyz="0 0 -1"/>
+        <limit lower="-3.14" upper="3.14" effort="1000.0" velocity="1000.0"/>
+        <dynamics damping="10" friction="5"/>
+    </joint> -->
+
+    <joint name="joint_eff" type="fixed">
+        <parent link="link_3"/>
+        <child link="end_effector"/>
+        <origin rpy="1.57079632679 0 1.57079632679" xyz="0.8 0 0.0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    
+    <link name="end_effector">
+    </link>
+
+    <xacro:include filename="example_gazebo.xacro" />
+
+</robot>
